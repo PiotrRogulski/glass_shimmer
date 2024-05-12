@@ -7,14 +7,12 @@ class Shimmer extends StatelessWidget {
   const Shimmer({
     super.key,
     this.borderColor,
-    this.borderWidth = 2,
     this.borderRadius = BorderRadius.zero,
     this.showBaseBorder = true,
     required this.child,
   });
 
   final Color? borderColor;
-  final double borderWidth;
   final BorderRadius borderRadius;
   final bool showBaseBorder;
   final Widget child;
@@ -25,24 +23,29 @@ class Shimmer extends StatelessWidget {
 
     final borderColor = this.borderColor ?? colorScheme.outline;
 
+    // TODO: hover & pressed states
+    final borderWidth = 1.0;
+
     return Stack(
       fit: StackFit.passthrough,
       children: [
         child,
-        Positioned.fill(
-          child: IgnorePointer(
-            child: Material(
-              type: MaterialType.transparency,
-              shape: RoundedRectangleBorder(
-                borderRadius: borderRadius,
-                side: BorderSide(
-                  color: borderColor.withOpacity(showBaseBorder ? 0.15 : 0),
-                  width: borderWidth,
+        if (showBaseBorder)
+          Positioned.fill(
+            child: IgnorePointer(
+              child: Container(
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: borderRadius,
+                    side: BorderSide(
+                      color: borderColor.withOpacity(0.15),
+                      width: borderWidth,
+                    ),
+                  ),
                 ),
               ),
             ),
           ),
-        ),
         Positioned.fill(
           child: ShimmerShader(
             shimmerRadius: 50,
