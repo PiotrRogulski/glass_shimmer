@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:glass_shimmer/widgets/card.dart';
 import 'package:glass_shimmer/widgets/list_tile.dart';
@@ -21,7 +23,7 @@ class Home extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 itemBuilder: (context, index) => ShimmerListTile(
                   title: Text('Item $index'),
-                  onTap: () => debugPrint('Item $index tapped'),
+                  onTap: () => log('Item $index tapped'),
                 ),
                 separatorBuilder: (context, index) => const SizedBox(height: 8),
               ),
@@ -38,7 +40,7 @@ class Home extends StatelessWidget {
                       child: SizedBox.square(
                         dimension: 100,
                         child: ShimmerCard(
-                          onTap: () => debugPrint('Card $i tapped'),
+                          onTap: () => log('Card $i tapped'),
                           child: Center(
                             child: Text(
                               '$i',

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 
 extension CursorPositionX on BuildContext {
-  Offset? get cursorPosition => CursorPosition.of(this);
+  ({Offset position, bool isActive}) get cursorPosition =>
+      CursorPosition.of(this);
 }
 
 class CursorPosition extends HookWidget {
@@ -13,32 +14,37 @@ class CursorPosition extends HookWidget {
 
   final Widget child;
 
-  static Offset? of(BuildContext context) {
+  static ({Offset position, bool isActive}) of(BuildContext context) {
     final cursorPosition =
         context.dependOnInheritedWidgetOfExactType<_CursorPosition>();
     assert(cursorPosition != null, 'No CursorPosition found in context');
-    return cursorPosition!.cursorPosition;
+    cursorPosition!;
+    return (
+      position: cursorPosition.cursorPosition,
+      isActive: cursorPosition.cursorActive,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final cursorPosition = useState<Offset?>(null);
+    final cursorPosition = useState<Offset>(Offset.zero);
+    final cursorActive = useState(false);
 
     void updatePosition(PointerEvent event) {
-      if (context.size?.contains(event.position) ?? false) {
+      cursorActive.value = context.size?.contains(event.position) ?? false;
+      if (cursorActive.value) {
         cursorPosition.value = event.position;
-      } else {
-        cursorPosition.value = null;
       }
     }
 
     return MouseRegion(
-      onExit: (_) => cursorPosition.value = null,
+      onExit: (_) => cursorActive.value = false,
       child: Listener(
         onPointerMove: updatePosition,
         onPointerHover: updatePosition,
         child: _CursorPosition(
           cursorPosition: cursorPosition.value,
+          cursorActive: cursorActive.value,
           child: child,
         ),
       ),
@@ -49,12 +55,15 @@ class CursorPosition extends HookWidget {
 class _CursorPosition extends InheritedWidget {
   const _CursorPosition({
     required this.cursorPosition,
+    required this.cursorActive,
     required super.child,
   });
 
-  final Offset? cursorPosition;
+  final Offset cursorPosition;
+  final bool cursorActive;
 
   @override
   bool updateShouldNotify(_CursorPosition oldWidget) =>
-      cursorPosition != oldWidget.cursorPosition;
+      cursorPosition != oldWidget.cursorPosition ||
+      cursorActive != oldWidget.cursorActive;
 }

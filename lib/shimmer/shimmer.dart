@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
 import 'package:glass_shimmer/cursor_position.dart';
+import 'package:leancode_hooks/leancode_hooks.dart';
 
 class Shimmer extends StatelessWidget {
   const Shimmer({
     super.key,
     this.borderColor,
-    this.borderWidth = 3,
+    this.borderWidth = 2,
     this.borderRadius = BorderRadius.zero,
     this.showBaseBorder = true,
     required this.child,
@@ -71,7 +72,7 @@ class Shimmer extends StatelessWidget {
   }
 }
 
-class ShimmerShader extends StatelessWidget {
+class ShimmerShader extends HookWidget {
   const ShimmerShader({
     super.key,
     required this.shimmerRadius,
@@ -83,11 +84,39 @@ class ShimmerShader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final (:position, :isActive) = context.cursorPosition;
+
+    final shimmerController = useAnimationController(
+      duration: Durations.medium4,
+    );
+
+    final progress = useAnimation(
+      CurvedAnimation(
+        parent: shimmerController,
+        curve: Easing.standard,
+        reverseCurve: Easing.standard.flipped,
+      ),
+    );
+    final shimmerRadius = this.shimmerRadius * progress;
+    final shimmerAlpha = progress;
+
+    useEffect(
+      () {
+        if (isActive) {
+          shimmerController.forward();
+        } else {
+          shimmerController.reverse();
+        }
+
+        return null;
+      },
+      [isActive],
+    );
+
     return ShaderBuilder(
       assetKey: 'shaders/shimmer.frag',
       child: IgnorePointer(child: child),
       (context, shader, child) {
-        final cursorPosition = context.cursorPosition;
         return AnimatedSampler(
           (image, size, canvas) {
             final topLeft = switch (context.findRenderObject()) {
@@ -98,14 +127,14 @@ class ShimmerShader extends StatelessWidget {
               ..setFloatUniforms((uniforms) {
                 uniforms
                   ..setSize(size)
-                  ..setOffset((context.cursorPosition ?? Offset.zero) - topLeft)
+                  ..setOffset(position - topLeft)
                   ..setFloat(shimmerRadius)
-                  ..setFloat(cursorPosition == null ? 0 : 1);
+                  ..setFloat(shimmerAlpha);
               })
               ..setImageSampler(0, image);
 
             canvas.drawRect(
-              Rect.fromLTWH(0, 0, size.width, size.height),
+              Offset.zero & size,
               Paint()..shader = shader,
             );
           },

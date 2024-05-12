@@ -11,6 +11,7 @@ class App extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(
           seedColor: const Color(0xFFFF0000),
           brightness: Brightness.dark,
+          dynamicSchemeVariant: DynamicSchemeVariant.fidelity,
         ).copyWith(
           shadow: Colors.transparent,
         ),
