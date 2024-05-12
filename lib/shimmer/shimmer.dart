@@ -23,7 +23,7 @@ class Shimmer extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    final borderColor = this.borderColor ?? colorScheme.onSurface;
+    final borderColor = this.borderColor ?? colorScheme.outline;
 
     return Stack(
       fit: StackFit.passthrough,
