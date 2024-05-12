@@ -36,7 +36,7 @@ class Shimmer extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: borderRadius,
                 side: BorderSide(
-                  color: borderColor.withOpacity(showBaseBorder ? 0.25 : 0),
+                  color: borderColor.withOpacity(showBaseBorder ? 0.15 : 0),
                   width: borderWidth,
                 ),
               ),
