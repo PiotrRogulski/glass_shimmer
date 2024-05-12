@@ -4,12 +4,13 @@ publish_to: 'none'
 version: 0.1.0
 
 environment:
-  sdk: 3.3.4
-  flutter: 3.19.6
+  sdk: 3.5.0-147.0.dev
+  flutter: 3.22.0-31.0.pre.20
 
 dependencies:
   flutter:
     sdk: flutter
+  leancode_hooks: ^0.0.6
 
 dev_dependencies:
   flutter_test:
