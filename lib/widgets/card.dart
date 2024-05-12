@@ -18,11 +18,7 @@ class ShimmerCard extends StatelessWidget {
     const borderRadius = BorderRadius.all(Radius.circular(16));
 
     return Shimmer(
-      border: (
-        color: colorScheme.onSurface,
-        width: 3,
-        radius: borderRadius,
-      ),
+      borderRadius: borderRadius,
       child: Material(
         surfaceTintColor: colorScheme.surfaceTint,
         borderRadius: borderRadius,

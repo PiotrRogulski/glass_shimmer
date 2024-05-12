@@ -5,15 +5,25 @@ import 'package:glass_shimmer/cursor_position.dart';
 class Shimmer extends StatelessWidget {
   const Shimmer({
     super.key,
-    required this.border,
+    this.borderColor,
+    this.borderWidth = 3,
+    this.borderRadius = BorderRadius.zero,
+    this.showBaseBorder = true,
     required this.child,
   });
 
-  final ({Color color, double width, BorderRadius radius}) border;
+  final Color? borderColor;
+  final double borderWidth;
+  final BorderRadius borderRadius;
+  final bool showBaseBorder;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
+    final borderColor = this.borderColor ?? colorScheme.onSurface;
+
     return Stack(
       fit: StackFit.passthrough,
       children: [
@@ -23,10 +33,10 @@ class Shimmer extends StatelessWidget {
             child: Material(
               type: MaterialType.transparency,
               shape: RoundedRectangleBorder(
-                borderRadius: border.radius,
+                borderRadius: borderRadius,
                 side: BorderSide(
-                  color: border.color.withOpacity(0.25),
-                  width: border.width,
+                  color: borderColor.withOpacity(showBaseBorder ? 0.25 : 0),
+                  width: borderWidth,
                 ),
               ),
             ),
@@ -36,21 +46,21 @@ class Shimmer extends StatelessWidget {
           child: ShimmerShader(
             shimmerRadius: 50,
             child: Material(
-              color: border.color.withOpacity(0.1),
-              shape: RoundedRectangleBorder(borderRadius: border.radius),
+              color: borderColor.withOpacity(0.1),
+              shape: RoundedRectangleBorder(borderRadius: borderRadius),
             ),
           ),
         ),
         Positioned.fill(
           child: ShimmerShader(
-            shimmerRadius: 100,
+            shimmerRadius: 150,
             child: Material(
               type: MaterialType.transparency,
               shape: RoundedRectangleBorder(
-                borderRadius: border.radius,
+                borderRadius: borderRadius,
                 side: BorderSide(
-                  color: border.color.withOpacity(0.75),
-                  width: border.width,
+                  color: borderColor,
+                  width: borderWidth,
                 ),
               ),
             ),
@@ -77,20 +87,20 @@ class ShimmerShader extends StatelessWidget {
       assetKey: 'shaders/shimmer.frag',
       child: IgnorePointer(child: child),
       (context, shader, child) {
+        final cursorPosition = context.cursorPosition;
         return AnimatedSampler(
           (image, size, canvas) {
             final topLeft = switch (context.findRenderObject()) {
               final RenderBox box => box.localToGlobal(Offset.zero),
               _ => Offset.zero,
             };
-            final cursorPosition =
-                (context.cursorPosition ?? Offset.zero) - topLeft;
             shader
               ..setFloatUniforms((uniforms) {
                 uniforms
                   ..setSize(size)
-                  ..setOffset(cursorPosition)
-                  ..setFloat(shimmerRadius);
+                  ..setOffset((context.cursorPosition ?? Offset.zero) - topLeft)
+                  ..setFloat(shimmerRadius)
+                  ..setFloat(cursorPosition == null ? 0 : 1);
               })
               ..setImageSampler(0, image);
 
