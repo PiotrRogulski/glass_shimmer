@@ -3,19 +3,27 @@ import 'package:flutter_shaders/flutter_shaders.dart';
 import 'package:glass_shimmer/cursor_position.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 
-class Shimmer extends StatelessWidget {
+class Shimmer extends HookWidget {
   const Shimmer({
     super.key,
     this.borderColor,
     this.borderRadius = BorderRadius.zero,
     this.showBaseBorder = true,
+    this.statesController,
     required this.child,
   });
 
   final Color? borderColor;
   final BorderRadius borderRadius;
   final bool showBaseBorder;
+  final WidgetStatesController? statesController;
   final Widget child;
+
+  static const widths = (
+    base: 2.0,
+    hover: 6.0,
+    pressed: 8.0,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +31,30 @@ class Shimmer extends StatelessWidget {
 
     final borderColor = this.borderColor ?? colorScheme.outline;
 
-    // TODO: hover & pressed states
-    final borderWidth = 1.0;
+    final borderWidth = useState(widths.base);
+
+    useEffect(
+      () {
+        final statesController = this.statesController;
+        if (statesController == null) {
+          return null;
+        }
+
+        void listener() {
+          if (statesController.value.contains(WidgetState.pressed)) {
+            borderWidth.value = widths.pressed;
+          } else if (statesController.value.contains(WidgetState.hovered)) {
+            borderWidth.value = widths.hover;
+          } else {
+            borderWidth.value = widths.base;
+          }
+        }
+
+        statesController.addListener(listener);
+        return () => statesController.removeListener(listener);
+      },
+      [statesController],
+    );
 
     return Stack(
       fit: StackFit.passthrough,
@@ -32,18 +62,25 @@ class Shimmer extends StatelessWidget {
         child,
         if (showBaseBorder)
           Positioned.fill(
-            child: IgnorePointer(
-              child: Container(
-                decoration: ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: borderRadius,
-                    side: BorderSide(
-                      color: borderColor.withOpacity(0.15),
-                      width: borderWidth,
+            child: TweenAnimationBuilder(
+              tween: Tween<double>(begin: widths.base, end: borderWidth.value),
+              duration: Durations.medium1,
+              curve: Easing.standard,
+              builder: (context, borderWidth, child) {
+                return IgnorePointer(
+                  child: Container(
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: borderRadius,
+                        side: BorderSide(
+                          color: borderColor.withOpacity(0.15),
+                          width: borderWidth,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ),
         Positioned.fill(
@@ -56,18 +93,25 @@ class Shimmer extends StatelessWidget {
           ),
         ),
         Positioned.fill(
-          child: ShimmerShader(
-            shimmerRadius: 150,
-            child: Material(
-              type: MaterialType.transparency,
-              shape: RoundedRectangleBorder(
-                borderRadius: borderRadius,
-                side: BorderSide(
-                  color: borderColor,
-                  width: borderWidth,
+          child: TweenAnimationBuilder(
+            tween: Tween<double>(begin: widths.base, end: borderWidth.value),
+            duration: Durations.medium1,
+            curve: Easing.standard,
+            builder: (context, borderWidth, child) {
+              return ShimmerShader(
+                shimmerRadius: 120,
+                child: Material(
+                  type: MaterialType.transparency,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: borderRadius,
+                    side: BorderSide(
+                      color: borderColor,
+                      width: borderWidth,
+                    ),
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           ),
         ),
       ],

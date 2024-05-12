@@ -38,7 +38,7 @@ class Home extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8),
                       child: SizedBox.square(
-                        dimension: 100,
+                        dimension: 128,
                         child: ShimmerCard(
                           onTap: () => log('Card $i tapped'),
                           child: Center(

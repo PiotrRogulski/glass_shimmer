@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:glass_shimmer/shimmer/shimmer.dart';
+import 'package:leancode_hooks/leancode_hooks.dart';
 
-class ShimmerListTile extends StatelessWidget {
+class ShimmerListTile extends HookWidget {
   const ShimmerListTile({
     super.key,
     this.onTap,
@@ -13,11 +14,32 @@ class ShimmerListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final statesController = useMaterialStatesController();
+
+    const borderRadius = BorderRadius.all(Radius.circular(12));
+
     return Shimmer(
       showBaseBorder: false,
-      child: ListTile(
-        title: title,
-        onTap: onTap,
+      statesController: statesController,
+      borderRadius: borderRadius,
+      child: Material(
+        type: MaterialType.transparency,
+        clipBehavior: Clip.antiAlias,
+        borderRadius: borderRadius,
+        child: InkWell(
+          onTap: onTap,
+          statesController: statesController,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 16,
+            ),
+            child: DefaultTextStyle(
+              style: Theme.of(context).textTheme.bodyLarge!,
+              child: title ?? const SizedBox(),
+            ),
+          ),
+        ),
       ),
     );
   }

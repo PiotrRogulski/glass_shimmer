@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:glass_shimmer/shimmer/shimmer.dart';
+import 'package:leancode_hooks/leancode_hooks.dart';
 
-class ShimmerCard extends StatelessWidget {
+class ShimmerCard extends HookWidget {
   const ShimmerCard({
     super.key,
     this.onTap,
@@ -17,8 +18,11 @@ class ShimmerCard extends StatelessWidget {
 
     const borderRadius = BorderRadius.all(Radius.circular(16));
 
+    final statesController = useMaterialStatesController();
+
     return Shimmer(
       borderRadius: borderRadius,
+      statesController: statesController,
       child: Material(
         surfaceTintColor: colorScheme.surfaceTint,
         borderRadius: borderRadius,
@@ -26,6 +30,7 @@ class ShimmerCard extends StatelessWidget {
         elevation: 2,
         child: InkWell(
           onTap: onTap,
+          statesController: statesController,
           child: child,
         ),
       ),
