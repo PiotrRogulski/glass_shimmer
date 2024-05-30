@@ -84,22 +84,14 @@ class Shimmer extends HookWidget {
             ),
           ),
         Positioned.fill(
-          child: ShimmerShader(
-            shimmerRadius: 50,
-            child: Material(
-              color: borderColor.withOpacity(0.25),
-              shape: RoundedRectangleBorder(borderRadius: borderRadius),
-            ),
-          ),
-        ),
-        Positioned.fill(
           child: TweenAnimationBuilder(
             tween: Tween<double>(begin: widths.base, end: borderWidth.value),
             duration: Durations.medium1,
             curve: Easing.standard,
             builder: (context, borderWidth, child) {
               return ShimmerShader(
-                shimmerRadius: 120,
+                borderRadius: borderRadius.topLeft.x,
+                borderWidth: borderWidth,
                 child: Material(
                   type: MaterialType.transparency,
                   shape: RoundedRectangleBorder(
@@ -122,11 +114,13 @@ class Shimmer extends HookWidget {
 class ShimmerShader extends HookWidget {
   const ShimmerShader({
     super.key,
-    required this.shimmerRadius,
+    required this.borderRadius,
+    required this.borderWidth,
     required this.child,
   });
 
-  final double shimmerRadius;
+  final double borderRadius;
+  final double borderWidth;
   final Widget child;
 
   @override
@@ -144,7 +138,6 @@ class ShimmerShader extends HookWidget {
         reverseCurve: Easing.standard.flipped,
       ),
     );
-    final shimmerRadius = this.shimmerRadius * progress;
     final shimmerAlpha = progress;
 
     useEffect(
@@ -161,7 +154,8 @@ class ShimmerShader extends HookWidget {
     );
 
     return ShaderBuilder(
-      assetKey: 'shaders/shimmer.frag',
+      // assetKey: 'shaders/shimmer.frag',
+      assetKey: 'shaders/border.frag',
       child: IgnorePointer(child: child),
       (context, shader, child) {
         return AnimatedSampler(
@@ -170,15 +164,22 @@ class ShimmerShader extends HookWidget {
               final RenderBox box => box.localToGlobal(Offset.zero),
               _ => Offset.zero,
             };
-            shader
-              ..setFloatUniforms((uniforms) {
-                uniforms
-                  ..setSize(size)
-                  ..setOffset(position - topLeft)
-                  ..setFloat(shimmerRadius)
-                  ..setFloat(shimmerAlpha);
-              })
-              ..setImageSampler(0, image);
+            // shader
+            //   ..setFloatUniforms((uniforms) {
+            //     uniforms
+            //       ..setSize(size)
+            //       ..setOffset(position - topLeft)
+            //       ..setFloat(shimmerRadius)
+            //       ..setFloat(shimmerAlpha);
+            //   })
+            //   ..setImageSampler(0, image);
+            shader.setFloatUniforms((uniforms) {
+              uniforms
+                ..setOffset(position - topLeft)
+                ..setFloat(borderRadius)
+                ..setFloat(borderWidth)
+                ..setFloat(shimmerAlpha);
+            });
 
             canvas.drawRect(
               Offset.zero & size,
