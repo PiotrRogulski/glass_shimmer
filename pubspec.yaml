@@ -4,8 +4,8 @@ publish_to: 'none'
 version: 0.1.0
 
 environment:
-  sdk: 3.5.0-147.0.dev
-  flutter: 3.22.0-31.0.pre.20
+  sdk: 3.5.0-203.0.dev
+  flutter: 3.23.0-13.0.pre.22
 
 dependencies:
   flutter:
@@ -14,8 +14,6 @@ dependencies:
   leancode_hooks: ^0.0.6
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
   leancode_lint: ^12.1.0
 
 flutter:
