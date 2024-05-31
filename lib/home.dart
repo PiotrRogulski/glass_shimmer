@@ -21,9 +21,9 @@ class Home extends StatelessWidget {
               child: ListView.separated(
                 itemCount: 5,
                 padding: const EdgeInsets.all(8),
-                itemBuilder: (context, index) => ShimmerListTile(
-                  title: Text('Item $index'),
-                  onTap: () => log('Item $index tapped'),
+                itemBuilder: (context, i) => ShimmerListTile(
+                  title: Text('Item ${i + 1}'),
+                  onTap: () => log('Item ${i + 1} tapped'),
                 ),
                 separatorBuilder: (context, index) => const SizedBox(height: 8),
               ),
@@ -31,8 +31,7 @@ class Home extends StatelessWidget {
           ),
           Expanded(
             child: Center(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
+              child: Wrap(
                 children: [
                   for (var i = 0; i < 5; i++)
                     Padding(
@@ -40,10 +39,10 @@ class Home extends StatelessWidget {
                       child: SizedBox.square(
                         dimension: 128,
                         child: ShimmerCard(
-                          onTap: () => log('Card $i tapped'),
+                          onTap: () => log('Card ${i + 1} tapped'),
                           child: Center(
                             child: Text(
-                              '$i',
+                              '${i + 1}',
                               style: Theme.of(context).textTheme.headlineMedium,
                             ),
                           ),

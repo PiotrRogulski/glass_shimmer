@@ -21,6 +21,12 @@ const float alpha = 0.99;
 const float lightHeight = 10;
 const vec4 lightColor = vec4(1, 1, 1, 1);
 
+const float attenuationCoefficient = 0.002;
+
+float attenuation(float d) {
+    return exp(-d * attenuationCoefficient);
+}
+
 mat3 rotY(float a) {
     return mat3(
         cos(a), 0, -sin(a),
@@ -100,12 +106,13 @@ vec3 calculateNormal(vec2 pos) {
 void main() {
     const vec2 pos = FlutterFragCoord().xy;
 
-    const vec4 L = normalize(vec4(uCursorPos - pos, lightHeight, 0));
+    const vec4 L0 = vec4(uCursorPos - pos, lightHeight, 0);
+    const vec4 L = normalize(L0);
     const vec4 N = vec4(calculateNormal(pos), 0);
     const vec4 R = reflect(-L, N);
 
     const vec4 diffuse = kd * max(0, dot(L, N)) * lightColor;
     const vec4 specular = ks * pow(max(0, dot(R, V)), alpha) * lightColor;
 
-    oColor = (diffuse + specular) * uShimmerAlpha;
+    oColor = (diffuse + specular) * uShimmerAlpha * attenuation(length(L0));
 }
