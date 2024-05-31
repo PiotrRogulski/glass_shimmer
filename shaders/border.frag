@@ -63,12 +63,12 @@ vec3 calculateNormal(vec2 pos) {
 
     if (pos.x < uBorderRadius && pos.y > uSize.y - uBorderRadius) {
         const vec3 N = calculateNormalTopLeft(vec2(pos.x, uSize.y - pos.y));
-        return vec3(-N.x, N.y, -N.z);
+        return vec3(N.x, -N.y, N.z);
     }
 
     if (pos.x > uSize.x - uBorderRadius && pos.y < uBorderRadius) {
         const vec3 N = calculateNormalTopLeft(vec2(uSize.x - pos.x, pos.y));
-        return vec3(N.x, -N.y, -N.z);
+        return vec3(-N.x, N.y, N.z);
     }
 
     if (pos.x > uSize.x - uBorderRadius && pos.y > uSize.y - uBorderRadius) {
