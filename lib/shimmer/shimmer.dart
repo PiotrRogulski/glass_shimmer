@@ -154,7 +154,6 @@ class ShimmerShader extends HookWidget {
     );
 
     return ShaderBuilder(
-      // assetKey: 'shaders/shimmer.frag',
       assetKey: 'shaders/border.frag',
       child: IgnorePointer(child: child),
       (context, shader, child) {
@@ -164,15 +163,6 @@ class ShimmerShader extends HookWidget {
               final RenderBox box => box.localToGlobal(Offset.zero),
               _ => Offset.zero,
             };
-            // shader
-            //   ..setFloatUniforms((uniforms) {
-            //     uniforms
-            //       ..setSize(size)
-            //       ..setOffset(position - topLeft)
-            //       ..setFloat(shimmerRadius)
-            //       ..setFloat(shimmerAlpha);
-            //   })
-            //   ..setImageSampler(0, image);
             shader.setFloatUniforms((uniforms) {
               uniforms
                 ..setSize(size)
