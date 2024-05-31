@@ -21,4 +21,3 @@ flutter:
 
   shaders:
     - shaders/border.frag
-    - shaders/shimmer.frag
