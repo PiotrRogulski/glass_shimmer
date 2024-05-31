@@ -21,53 +21,87 @@ const float alpha = 0.99;
 const float lightHeight = 10;
 const vec4 lightColor = vec4(1, 1, 1, 1);
 
-mat4 rotY(float a) {
-    return mat4(
-        cos(a), 0, -sin(a), 0,
-        0, 1, 0, 0,
-        sin(a), 0, cos(a), 0,
-        0, 0, 0, 1
+mat3 rotY(float a) {
+    return mat3(
+        cos(a), 0, -sin(a),
+        0, 1, 0,
+        sin(a), 0, cos(a)
     );
 }
 
-mat4 rotZ(float a) {
-    return mat4(
-        cos(a), sin(a), 0, 0,
-        -sin(a), cos(a), 0, 0,
-        0, 0, 1, 0,
-        0, 0, 0, 1
+mat3 rotZ(float a) {
+    return mat3(
+        cos(a), sin(a), 0,
+        -sin(a), cos(a), 0,
+        0, 0, 1
     );
 
 }
 
-vec4 calculateNormalTopLeft(vec2 pos) {
+vec3 calculateNormalTopLeft(vec2 pos) {
     const float sqDist = pow(pos.x - uBorderRadius, 2) + pow(pos.y - uBorderRadius, 2);
     const float d = sqrt(sqDist);
 
-    if (d > uBorderRadius || d < uBorderRadius - uBorderWidth) {
-        return vec4(0, 0, 0, 0);
+    if (d > uBorderRadius) {
+        return vec3(0, 0, 0);
+    }
+
+    if (d < uBorderRadius - uBorderWidth) {
+        return vec3(0, 0, 1);
     }
 
     const float alpha = acos((uBorderRadius - uBorderWidth / 2 - d) / (uBorderWidth / 2));
     const float beta = atan(uBorderRadius - pos.y, uBorderRadius - pos.x);
 
-    return rotZ(beta) * rotY(-alpha) * vec4(1, 0, 0, 0);
+    return rotZ(beta) * rotY(-alpha) * vec3(1, 0, 0);
 }
 
-vec4 calculateNormal(vec2 pos) {
+vec3 calculateNormal(vec2 pos) {
     if (pos.x < uBorderRadius && pos.y < uBorderRadius) {
         return calculateNormalTopLeft(pos);
     }
 
-    // TODO: do other corners
-    return calculateNormalTopLeft(pos);
+    if (pos.x < uBorderRadius && pos.y > uSize.y - uBorderRadius) {
+        const vec3 N = calculateNormalTopLeft(vec2(pos.x, uSize.y - pos.y));
+        return vec3(-N.x, N.y, -N.z);
+    }
+
+    if (pos.x > uSize.x - uBorderRadius && pos.y < uBorderRadius) {
+        const vec3 N = calculateNormalTopLeft(vec2(uSize.x - pos.x, pos.y));
+        return vec3(N.x, -N.y, -N.z);
+    }
+
+    if (pos.x > uSize.x - uBorderRadius && pos.y > uSize.y - uBorderRadius) {
+        const vec3 N = calculateNormalTopLeft(vec2(uSize.x - pos.x, uSize.y - pos.y));
+        return vec3(-N.x, -N.y, N.z);
+    }
+
+    if (pos.x < uBorderRadius) {
+        return calculateNormalTopLeft(vec2(pos.x, uBorderRadius));
+    }
+
+    if (pos.x > uSize.x - uBorderRadius) {
+        const vec3 N = calculateNormalTopLeft(vec2(uSize.x - pos.x, uBorderRadius));
+        return vec3(-N.x, N.y, N.z);
+    }
+
+    if (pos.y < uBorderRadius) {
+        return calculateNormalTopLeft(vec2(uBorderRadius, pos.y));
+    }
+
+    if (pos.y > uSize.y - uBorderRadius) {
+        const vec3 N = calculateNormalTopLeft(vec2(uBorderRadius, uSize.y - pos.y));
+        return vec3(N.x, -N.y, N.z);
+    }
+
+    return vec3(0, 0, 1);
 }
 
 void main() {
     const vec2 pos = FlutterFragCoord().xy;
 
     const vec4 L = normalize(vec4(uCursorPos - pos, lightHeight, 0));
-    const vec4 N = calculateNormal(pos);
+    const vec4 N = vec4(calculateNormal(pos), 0);
     const vec4 R = reflect(-L, N);
 
     const vec4 diffuse = kd * max(0, dot(L, N)) * lightColor;
