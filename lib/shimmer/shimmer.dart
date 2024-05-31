@@ -20,9 +20,9 @@ class Shimmer extends HookWidget {
   final Widget child;
 
   static const widths = (
-    base: 2.0,
-    hover: 6.0,
-    pressed: 8.0,
+    base: 4.0,
+    hover: 8.0,
+    pressed: 10.0,
   );
 
   @override
@@ -178,7 +178,7 @@ class ShimmerShader extends HookWidget {
                 ..setSize(size)
                 ..setOffset(position - topLeft)
                 ..setFloat(borderRadius)
-                ..setFloat(8 ?? borderWidth)
+                ..setFloat(borderWidth)
                 ..setFloat(shimmerAlpha);
             });
 
