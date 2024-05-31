@@ -175,9 +175,10 @@ class ShimmerShader extends HookWidget {
             //   ..setImageSampler(0, image);
             shader.setFloatUniforms((uniforms) {
               uniforms
+                ..setSize(size)
                 ..setOffset(position - topLeft)
                 ..setFloat(borderRadius)
-                ..setFloat(borderWidth)
+                ..setFloat(8 ?? borderWidth)
                 ..setFloat(shimmerAlpha);
             });
 
