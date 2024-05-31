@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:glass_shimmer/widgets/card.dart';
 import 'package:glass_shimmer/widgets/list_tile.dart';
+import 'package:glass_shimmer/widgets/text_button.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -30,27 +31,52 @@ class Home extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Center(
-              child: Wrap(
-                children: [
-                  for (var i = 0; i < 5; i++)
-                    Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: SizedBox.square(
-                        dimension: 128,
-                        child: ShimmerCard(
-                          onTap: () => log('Card ${i + 1} tapped'),
-                          child: Center(
-                            child: Text(
-                              '${i + 1}',
-                              style: Theme.of(context).textTheme.headlineMedium,
+            child: ListView(
+              padding: const EdgeInsets.all(16),
+              children: [
+                Center(
+                  child: Wrap(
+                    children: [
+                      for (var i = 0; i < 5; i++)
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: SizedBox.square(
+                            dimension: 128,
+                            child: ShimmerCard(
+                              onTap: () => log('Card ${i + 1} tapped'),
+                              child: Center(
+                                child: Text(
+                                  '${i + 1}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
+                                ),
+                              ),
                             ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                for (var i = 0; i < 5; i++)
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Center(
+                      child: ShimmerTextButton(
+                        onTap: () => log('Button ${i + 1} tapped'),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 24,
+                          ),
+                          child: Text(
+                            Iterable.generate(i + 1, (i) => i + 1).join('   '),
                           ),
                         ),
                       ),
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
           ),
         ],

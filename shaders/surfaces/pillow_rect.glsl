@@ -3,20 +3,20 @@
 
 #include <utils/surface_props.glsl>
 
+// Based on https://mathcurve.com/surfaces.gb/coussin/coussin.shtml
 SurfaceProps calculateSurface(const vec2 pos, const vec2 size) {
-    const float a = size.x / 2;
-    const float b = size.y / 2;
+    const float width = size.x;
+    const float height = size.y;
 
-    const float x = pos.x - a;
-    const float y = pos.y - b;
-    const float z = sqrt((a*a - x*x) * (b*b - y*y));
+    const float x = pos.x / (width / 2) - 1;
+    const float y = pos.y / (height / 2) - 1;
+    const float z = 15 * sqrt((1 - x*x) * (1 - y*y)) / sqrt(2);
 
-    const float dzdx = x * (y*y - b*b) / z;
-    const float dzdy = y * (x*x - a*a) / z;
+    const float dzdx = 15 * x * (y*y - 1) / (sqrt((1 - x*x) * (1 - y*y)) * sqrt(2));
+    const float dzdy = 15 * y * (x*x - 1) / (sqrt((1 - x*x) * (1 - y*y)) * sqrt(2));
 
-    const vec3 N = vec3(-dzdx, -dzdy, 1);
-    return SurfaceProps(normalize(N), 1, 0);
+    const vec3 N = vec3(-dzdx / (width / 2), -dzdy / (height / 2), 1);
+    return SurfaceProps(normalize(N), 0.5, 0);
 }
-
 
 #endif // PILLOW_RECT_H
