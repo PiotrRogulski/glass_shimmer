@@ -1,109 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
 import 'package:glass_shimmer/cursor_position.dart';
+import 'package:glass_shimmer/shimmer/shimmer_parameters.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 
-class Shimmer extends HookWidget {
+class Shimmer<T extends ShimmerParameters> extends StatelessWidget {
   const Shimmer({
     super.key,
-    this.borderColor,
-    this.borderRadius = BorderRadius.zero,
-    this.showBaseBorder = true,
-    this.statesController,
+    required this.parameters,
     required this.child,
   });
 
-  final Color? borderColor;
-  final BorderRadius borderRadius;
-  final bool showBaseBorder;
-  final WidgetStatesController? statesController;
+  final T parameters;
   final Widget child;
-
-  static const widths = (
-    base: 4.0,
-    hover: 8.0,
-    pressed: 10.0,
-  );
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
-    final borderColor = this.borderColor ?? colorScheme.outline;
-
-    final borderWidth = useState(widths.base);
-
-    useEffect(
-      () {
-        final statesController = this.statesController;
-        if (statesController == null) {
-          return null;
-        }
-
-        void listener() {
-          if (statesController.value.contains(WidgetState.pressed)) {
-            borderWidth.value = widths.pressed;
-          } else if (statesController.value.contains(WidgetState.hovered)) {
-            borderWidth.value = widths.hover;
-          } else {
-            borderWidth.value = widths.base;
-          }
-        }
-
-        statesController.addListener(listener);
-        return () => statesController.removeListener(listener);
-      },
-      [statesController],
-    );
-
     return Stack(
       fit: StackFit.passthrough,
       children: [
         child,
-        if (showBaseBorder)
-          Positioned.fill(
-            child: TweenAnimationBuilder(
-              tween: Tween<double>(begin: widths.base, end: borderWidth.value),
-              duration: Durations.medium1,
-              curve: Easing.standard,
-              builder: (context, borderWidth, child) {
-                return IgnorePointer(
-                  child: Container(
-                    decoration: ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: borderRadius,
-                        side: BorderSide(
-                          color: borderColor.withOpacity(0.15),
-                          width: borderWidth,
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
         Positioned.fill(
-          child: TweenAnimationBuilder(
-            tween: Tween<double>(begin: widths.base, end: borderWidth.value),
-            duration: Durations.medium1,
-            curve: Easing.standard,
-            builder: (context, borderWidth, child) {
-              return ShimmerShader(
-                borderRadius: borderRadius.topLeft.x,
-                borderWidth: borderWidth,
-                child: Material(
-                  type: MaterialType.transparency,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: borderRadius,
-                    side: BorderSide(
-                      color: borderColor,
-                      width: borderWidth,
-                    ),
-                  ),
-                ),
-              );
-            },
+          child: ShimmerShader(
+            parameters: parameters,
+            child: const Material(
+              type: MaterialType.transparency,
+            ),
           ),
         ),
       ],
@@ -111,16 +33,14 @@ class Shimmer extends HookWidget {
   }
 }
 
-class ShimmerShader extends HookWidget {
+class ShimmerShader<T extends ShimmerParameters> extends HookWidget {
   const ShimmerShader({
     super.key,
-    required this.borderRadius,
-    required this.borderWidth,
+    required this.parameters,
     required this.child,
   });
 
-  final double borderRadius;
-  final double borderWidth;
+  final T parameters;
   final Widget child;
 
   @override
@@ -154,7 +74,7 @@ class ShimmerShader extends HookWidget {
     );
 
     return ShaderBuilder(
-      assetKey: 'shaders/border.frag',
+      assetKey: parameters.surface.assetKey,
       child: IgnorePointer(child: child),
       (context, shader, child) {
         return AnimatedSampler(
@@ -164,12 +84,12 @@ class ShimmerShader extends HookWidget {
               _ => Offset.zero,
             };
             shader.setFloatUniforms((uniforms) {
-              uniforms
-                ..setSize(size)
-                ..setOffset(position - topLeft)
-                ..setFloat(borderRadius)
-                ..setFloat(borderWidth)
-                ..setFloat(shimmerAlpha);
+              parameters.setupUniforms(
+                uniforms,
+                size: size,
+                cursorPosition: position - topLeft,
+                alpha: shimmerAlpha,
+              );
             });
 
             canvas.drawRect(

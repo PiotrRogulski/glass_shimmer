@@ -21,3 +21,4 @@ flutter:
 
   shaders:
     - shaders/border.frag
+    - shaders/pillow_rect.frag
