@@ -128,14 +128,14 @@ class ShimmerShader extends HookWidget {
     final (:position, :isActive) = context.cursorPosition;
 
     final shimmerController = useAnimationController(
-      duration: Durations.medium4,
+      duration: Durations.long4,
     );
 
     final progress = useAnimation(
       CurvedAnimation(
         parent: shimmerController,
-        curve: Easing.standard,
-        reverseCurve: Easing.standard.flipped,
+        curve: Curves.easeInOutCubicEmphasized,
+        reverseCurve: Curves.easeInOutCubicEmphasized.flipped,
       ),
     );
     final shimmerAlpha = progress;

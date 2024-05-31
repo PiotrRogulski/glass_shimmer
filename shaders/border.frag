@@ -8,7 +8,7 @@ uniform vec2 uSize;
 uniform vec2 uCursorPos;
 uniform float uBorderRadius;
 uniform float uBorderWidth;
-uniform float uShimmerAlpha;
+uniform float uAlpha;
 
 out vec4 oColor;
 
@@ -16,7 +16,7 @@ const vec4 V = vec4(0, 0, 1, 0);
 
 const float alpha = 0.99;
 
-const float lightHeight = 10;
+const float baseLightHeight = 15;
 const vec4 lightColor = vec4(1, 1, 1, 1);
 
 const float attenuationCoefficient = 0.005;
@@ -120,6 +120,8 @@ SurfaceProps calculateSurface(vec2 pos) {
 void main() {
     const vec2 pos = FlutterFragCoord().xy;
 
+    const float lightHeight = baseLightHeight + 300 * (1 - uAlpha);
+
     const vec4 L0 = vec4(uCursorPos - pos, lightHeight, 0);
     const vec4 L = normalize(L0);
     const SurfaceProps props = calculateSurface(pos);
@@ -129,5 +131,5 @@ void main() {
     const vec4 diffuse = props.kd * max(0, dot(L, N)) * lightColor;
     const vec4 specular = props.ks * pow(max(0, dot(R, V)), alpha) * lightColor;
 
-    oColor = (diffuse + specular) * uShimmerAlpha * attenuation(length(L0));
+    oColor = (diffuse + specular) * uAlpha * attenuation(length(L0));
 }
