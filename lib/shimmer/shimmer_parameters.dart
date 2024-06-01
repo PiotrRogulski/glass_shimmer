@@ -24,11 +24,13 @@ sealed class ShimmerParameters {
     required Size size,
     required Offset cursorPosition,
     required double alpha,
+    required double elevation,
   }) {
     uniforms
       ..setSize(size)
       ..setOffset(cursorPosition)
-      ..setFloat(alpha);
+      ..setFloat(alpha)
+      ..setFloat(elevation);
   }
 }
 
@@ -47,12 +49,14 @@ final class BorderShimmer extends ShimmerParameters {
     required Size size,
     required Offset cursorPosition,
     required double alpha,
+    required double elevation,
   }) {
     super.setupUniforms(
       uniforms,
       size: size,
       cursorPosition: cursorPosition,
       alpha: alpha,
+      elevation: elevation,
     );
     uniforms
       ..setFloat(borderRadius)

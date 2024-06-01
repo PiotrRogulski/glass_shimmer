@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glass_shimmer/shimmer/shimmer.dart';
 import 'package:glass_shimmer/shimmer/shimmer_parameters.dart';
-import 'package:glass_shimmer/widgets/border_width.dart';
+import 'package:glass_shimmer/widgets/border_state.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 
 class ShimmerListTile extends HookWidget {
@@ -18,13 +18,14 @@ class ShimmerListTile extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BorderWidthBuilder(
-      builder: (context, borderWidth, statesController) {
+    return BorderStateBuilder(
+      builder: (context, borderWidth, elevation, statesController) {
         return Shimmer(
           parameters: BorderShimmer(
             borderWidth: borderWidth,
             borderRadius: borderRadius,
           ),
+          elevation: elevation,
           child: Material(
             type: MaterialType.transparency,
             clipBehavior: Clip.antiAlias,

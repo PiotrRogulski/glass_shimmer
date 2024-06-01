@@ -8,10 +8,12 @@ class Shimmer<T extends ShimmerParameters> extends StatelessWidget {
   const Shimmer({
     super.key,
     required this.parameters,
+    required this.elevation,
     required this.child,
   });
 
   final T parameters;
+  final double elevation;
   final Widget child;
 
   @override
@@ -23,6 +25,7 @@ class Shimmer<T extends ShimmerParameters> extends StatelessWidget {
         Positioned.fill(
           child: ShimmerShader(
             parameters: parameters,
+            elevation: elevation,
             child: const Material(
               type: MaterialType.transparency,
             ),
@@ -37,10 +40,12 @@ class ShimmerShader<T extends ShimmerParameters> extends HookWidget {
   const ShimmerShader({
     super.key,
     required this.parameters,
+    required this.elevation,
     required this.child,
   });
 
   final T parameters;
+  final double elevation;
   final Widget child;
 
   @override
@@ -89,6 +94,7 @@ class ShimmerShader<T extends ShimmerParameters> extends HookWidget {
                 size: size,
                 cursorPosition: position - topLeft,
                 alpha: shimmerAlpha,
+                elevation: elevation,
               );
             });
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:glass_shimmer/shimmer/shimmer.dart';
 import 'package:glass_shimmer/shimmer/shimmer_parameters.dart';
-import 'package:glass_shimmer/widgets/border_width.dart';
+import 'package:glass_shimmer/widgets/border_state.dart';
 
 class ShimmerTextButton extends StatelessWidget {
   const ShimmerTextButton({
@@ -19,12 +19,13 @@ class ShimmerTextButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return BorderWidthBuilder(
-      builder: (context, borderWidth, statesController) {
+    return BorderStateBuilder(
+      builder: (context, borderWidth, elevation, statesController) {
         return ClipRRect(
           borderRadius: BorderRadius.circular(borderRadius),
           child: Shimmer(
             parameters: const PillowShimmer(),
+            elevation: elevation,
             child: Material(
               surfaceTintColor: colorScheme.surfaceTint,
               borderRadius: BorderRadius.circular(borderRadius),
@@ -32,6 +33,7 @@ class ShimmerTextButton extends StatelessWidget {
               elevation: 2,
               child: InkWell(
                 onTap: onTap,
+                statesController: statesController,
                 child: child,
               ),
             ),

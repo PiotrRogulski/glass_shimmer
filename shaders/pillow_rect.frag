@@ -8,6 +8,7 @@
 uniform vec2 uSize;
 uniform vec2 uCursorPos;
 uniform float uAlpha;
+uniform float uElevation;
 
 out vec4 oColor;
 
@@ -16,5 +17,5 @@ void main() {
 
     const SurfaceProps props = calculateSurface(pos, uSize);
 
-    oColor = calculateColor(pos, props, uAlpha, uCursorPos);
+    oColor = calculateColor(vec3(pos, uElevation), props, uAlpha, uCursorPos);
 }

@@ -18,10 +18,10 @@ class App extends StatelessWidget {
           shadow: Colors.transparent,
         ),
       ).copyWith(
-        splashFactory: InkSparkle.splashFactory,
-        highlightColor: colorScheme.primary.withOpacity(0.07),
-        hoverColor: colorScheme.primary.withOpacity(0.03),
-        splashColor: colorScheme.primary.withOpacity(0.2),
+        splashFactory: NoSplash.splashFactory,
+        highlightColor: Colors.transparent,
+        hoverColor: colorScheme.primary.withOpacity(0.05),
+        splashColor: Colors.transparent,
       ),
       home: const Home(),
     );
