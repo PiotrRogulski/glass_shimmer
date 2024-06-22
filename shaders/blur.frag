@@ -2,8 +2,8 @@
 
 #include <flutter/runtime_effect.glsl>
 
-#define RADIUS 16
-#define SIGMA2 64
+#define RADIUS 19
+#define SIGMA2 96
 #define PI 3.14159265359
 
 uniform vec2 uSize;

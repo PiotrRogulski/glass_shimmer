@@ -19,11 +19,11 @@ class Home extends StatelessWidget {
           SizedBox(
             width: 200,
             child: Material(
-              color: colorScheme.surfaceContainer,
+              color: colorScheme.surfaceContainerHigh,
               child: ListView.separated(
                 itemCount: 25,
                 padding:
-                    const EdgeInsets.all(8) + EdgeBlur.blurPaddingOf(context),
+                    const EdgeInsets.all(12) + EdgeBlur.blurPaddingOf(context),
                 itemBuilder: (context, i) => ShimmerListTile(
                   title: Text('Item ${i + 1}'),
                   onTap: () => log('Item ${i + 1} tapped'),
@@ -36,6 +36,44 @@ class Home extends StatelessWidget {
             child: ListView(
               padding: EdgeBlur.blurPaddingOf(context),
               children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Row(
+                      children: [
+                        for (final color in Colors.primaries) ...[
+                          Expanded(
+                            child: Container(
+                              height: 64,
+                              color: color,
+                            ),
+                          ),
+                          if (color != Colors.primaries.last)
+                            const SizedBox(width: 4),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Row(
+                      children: [
+                        for (final color in Colors.primaries) ...[
+                          Container(
+                            width: 8,
+                            height: 64,
+                            color: color,
+                          ),
+                          if (color != Colors.primaries.last) const Spacer(),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Text(_loremIpsum),
