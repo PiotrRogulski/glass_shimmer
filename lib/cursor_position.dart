@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 
@@ -38,10 +40,26 @@ class CursorPosition extends HookWidget {
     }
 
     return MouseRegion(
+      onEnter: updatePosition,
       onExit: (_) => cursorActive.value = false,
       child: Listener(
         onPointerMove: updatePosition,
         onPointerHover: updatePosition,
+        onPointerDown: (event) {
+          if (event.kind != PointerDeviceKind.mouse) {
+            cursorActive.value = true;
+          }
+        },
+        onPointerUp: (event) {
+          if (event.kind != PointerDeviceKind.mouse) {
+            cursorActive.value = false;
+          }
+        },
+        onPointerCancel: (event) {
+          if (event.kind != PointerDeviceKind.mouse) {
+            cursorActive.value = false;
+          }
+        },
         child: _CursorPosition(
           cursorPosition: cursorPosition.value,
           cursorActive: cursorActive.value,
