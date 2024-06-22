@@ -3,7 +3,7 @@
 #include <flutter/runtime_effect.glsl>
 
 #define RADIUS 16
-#define SIGMA2 25
+#define SIGMA2 64
 #define PI 3.14159265359
 
 uniform vec2 uSize;
@@ -16,11 +16,24 @@ out vec4 oColor;
 vec4 gaussianBlur(vec2 uv, float blurFraction) {
     float sum = 0.0;
     vec4 color = vec4(0.0);
+    float lastI = -2 * RADIUS;
+    float lastJ = -2 * RADIUS;
     for (int i = -RADIUS; i <= RADIUS; i++) {
+        float newI = floor(float(i) * blurFraction);
+        if (newI == lastI) {
+            continue;
+        }
+        lastI = newI;
         for (int j = -RADIUS; j <= RADIUS; j++) {
+            float newJ = floor(float(j) * blurFraction);
+            if (newJ == lastJ) {
+                continue;
+            }
+            lastJ = newJ;
             float d = float(i * i + j * j);
-            float weight = exp(-d / (2.0 * SIGMA2)) / (2.0 * PI * SIGMA2);
-            color += texture(uTexture, uv + vec2(float(i), float(j)) / uSize * blurFraction) * weight;
+            float weight = exp(-d / (2.0 * SIGMA2)) / sqrt(2.0 * PI * SIGMA2);
+            vec2 targetUv = uv + vec2(float(i)-0.5, float(j)-0.5) / uSize * blurFraction;
+            color += texture(uTexture, targetUv) * weight;
             sum += weight;
         }
     }
@@ -37,7 +50,7 @@ void main() {
     }
 
     const float blurFraction = pos.y <= uTopHeight
-        ? (uTopHeight - pos.y) / uTopHeight
-        : (pos.y - uSize.y + uBottomHeight) / uBottomHeight;
+        ? smoothstep(0.0, 1.0, (uTopHeight - pos.y) / uTopHeight)
+        : smoothstep(0.0, 1.0, (pos.y - uSize.y + uBottomHeight) / uBottomHeight);
     oColor = gaussianBlur(uv, blurFraction);
 }

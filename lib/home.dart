@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:glass_shimmer/widgets/card.dart';
+import 'package:glass_shimmer/widgets/edge_blur.dart';
 import 'package:glass_shimmer/widgets/list_tile.dart';
 import 'package:glass_shimmer/widgets/text_button.dart';
 
@@ -20,8 +21,9 @@ class Home extends StatelessWidget {
             child: Material(
               color: colorScheme.surfaceContainer,
               child: ListView.separated(
-                itemCount: 5,
-                padding: const EdgeInsets.all(8),
+                itemCount: 25,
+                padding:
+                    const EdgeInsets.all(8) + EdgeBlur.blurPaddingOf(context),
                 itemBuilder: (context, i) => ShimmerListTile(
                   title: Text('Item ${i + 1}'),
                   onTap: () => log('Item ${i + 1} tapped'),
@@ -32,8 +34,12 @@ class Home extends StatelessWidget {
           ),
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeBlur.blurPaddingOf(context),
               children: [
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(_loremIpsum),
+                ),
                 Center(
                   child: Wrap(
                     children: [
@@ -84,3 +90,9 @@ class Home extends StatelessWidget {
     );
   }
 }
+
+const _loremIpsum = '''
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in nunc sem. Suspendisse accumsan, leo nec interdum tristique, metus dolor aliquet mauris, sit amet pellentesque metus tellus nec lorem. Proin auctor eget libero eget convallis. Aenean euismod ut leo non faucibus. Donec tristique lorem lectus, non ornare risus mollis vitae. Pellentesque eu venenatis sem, quis interdum ligula. Aenean mollis quis ex at varius. Aliquam at sem eget sapien iaculis commodo a ut sem.
+
+Donec pulvinar justo at magna congue finibus. Ut vulputate tortor nec diam molestie tempor. Donec quis rhoncus leo, non aliquam turpis. Aenean dignissim faucibus nulla eget ultrices. Nam velit nibh, rhoncus sed scelerisque nec, porttitor et metus. Nulla turpis nunc, rhoncus auctor posuere id, dignissim tincidunt orci. Nunc elementum, nulla sit amet rutrum tempus, metus dolor vehicula dolor, ut iaculis lectus lacus sed nibh. Aliquam sed faucibus enim, at sagittis mi. Aliquam porttitor leo nibh, at sollicitudin lectus tincidunt id. Curabitur hendrerit ex eu condimentum iaculis. Nam convallis ut risus ut ullamcorper. Sed et sapien nisi. Fusce sit amet odio turpis. Pellentesque in efficitur mauris. Pellentesque laoreet vel ligula vitae interdum. Praesent egestas turpis vel diam consectetur luctus.
+''';
