@@ -20,7 +20,7 @@ class App extends StatelessWidget {
       ).copyWith(
         splashFactory: NoSplash.splashFactory,
         highlightColor: Colors.transparent,
-        hoverColor: colorScheme.primary.withOpacity(0.05),
+        hoverColor: Colors.transparent,
         splashColor: Colors.transparent,
       ),
       home: const Home(),

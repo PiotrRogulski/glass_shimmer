@@ -4,8 +4,8 @@ publish_to: 'none'
 version: 0.1.0
 
 environment:
-  sdk: 3.5.0-203.0.dev
-  flutter: 3.23.0-13.0.pre.22
+  sdk: 3.5.0-288.0.dev
+  flutter: 3.23.0-13.0.pre.298
 
 dependencies:
   flutter:
@@ -14,7 +14,7 @@ dependencies:
   leancode_hooks: ^0.0.6
 
 dev_dependencies:
-  leancode_lint: ^12.1.0
+  leancode_lint: ^13.0.0
 
 flutter:
   uses-material-design: true

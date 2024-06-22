@@ -14,7 +14,7 @@ class ShimmerCard extends HookWidget {
   final VoidCallback? onTap;
   final Widget child;
 
-  static const borderRadius = 16.0;
+  static const borderRadius = 24.0;
 
   @override
   Widget build(BuildContext context) {

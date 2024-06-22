@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 
 enum BorderState {
-  base(width: 4, elevation: 0),
-  hover(width: 8, elevation: 0),
-  pressed(width: 10, elevation: -100),
+  base(width: 6, elevation: 0),
+  hover(width: 10, elevation: -25),
+  pressed(width: 14, elevation: -100),
   ;
 
   const BorderState({required this.width, required this.elevation});

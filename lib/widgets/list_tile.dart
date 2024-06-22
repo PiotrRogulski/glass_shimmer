@@ -14,7 +14,7 @@ class ShimmerListTile extends HookWidget {
   final VoidCallback? onTap;
   final Widget? title;
 
-  static const borderRadius = 12.0;
+  static const borderRadius = 20.0;
 
   @override
   Widget build(BuildContext context) {
