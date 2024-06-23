@@ -29,7 +29,7 @@ class CursorPosition extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cursorPosition = useState<Offset>(Offset.zero);
+    final cursorPosition = useState(Offset.zero);
     final cursorActive = useState(false);
 
     void updatePosition(PointerEvent event) {

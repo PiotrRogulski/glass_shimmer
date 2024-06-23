@@ -11,7 +11,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final ThemeData(:colorScheme, :textTheme) = Theme.of(context);
 
     return Scaffold(
       body: Row(
@@ -74,9 +74,12 @@ class Home extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(_loremIpsum),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    _loremIpsum,
+                    style: textTheme.bodyLarge,
+                  ),
                 ),
                 Center(
                   child: Wrap(
@@ -129,8 +132,10 @@ class Home extends StatelessWidget {
   }
 }
 
-const _loremIpsum = '''
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in nunc sem. Suspendisse accumsan, leo nec interdum tristique, metus dolor aliquet mauris, sit amet pellentesque metus tellus nec lorem. Proin auctor eget libero eget convallis. Aenean euismod ut leo non faucibus. Donec tristique lorem lectus, non ornare risus mollis vitae. Pellentesque eu venenatis sem, quis interdum ligula. Aenean mollis quis ex at varius. Aliquam at sem eget sapien iaculis commodo a ut sem.
-
-Donec pulvinar justo at magna congue finibus. Ut vulputate tortor nec diam molestie tempor. Donec quis rhoncus leo, non aliquam turpis. Aenean dignissim faucibus nulla eget ultrices. Nam velit nibh, rhoncus sed scelerisque nec, porttitor et metus. Nulla turpis nunc, rhoncus auctor posuere id, dignissim tincidunt orci. Nunc elementum, nulla sit amet rutrum tempus, metus dolor vehicula dolor, ut iaculis lectus lacus sed nibh. Aliquam sed faucibus enim, at sagittis mi. Aliquam porttitor leo nibh, at sollicitudin lectus tincidunt id. Curabitur hendrerit ex eu condimentum iaculis. Nam convallis ut risus ut ullamcorper. Sed et sapien nisi. Fusce sit amet odio turpis. Pellentesque in efficitur mauris. Pellentesque laoreet vel ligula vitae interdum. Praesent egestas turpis vel diam consectetur luctus.
-''';
+const _loremIpsum = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
+    'In in nunc sem. Suspendisse accumsan, leo nec interdum tristique, '
+    'metus dolor aliquet mauris, sit amet pellentesque metus tellus nec lorem. '
+    'Proin auctor eget libero eget convallis. Aenean euismod ut leo non '
+    'faucibus. Donec tristique lorem lectus, non ornare risus mollis vitae. '
+    'Pellentesque eu venenatis sem, quis interdum ligula. Aenean mollis quis '
+    'ex at varius. Aliquam at sem eget sapien iaculis commodo a ut sem.';
