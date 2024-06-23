@@ -1,6 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:glass_shimmer/shimmer/shimmer.dart';
+import 'package:glass_shimmer/shimmer/shimmer_parameters.dart';
+import 'package:glass_shimmer/widgets/border_state.dart';
 import 'package:glass_shimmer/widgets/card.dart';
 import 'package:glass_shimmer/widgets/edge_blur.dart';
 import 'package:glass_shimmer/widgets/list_tile.dart';
@@ -103,6 +106,40 @@ class Home extends StatelessWidget {
                           ),
                         ),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(5, (i) {
+                        final dimension = (12 + i * 24).toDouble();
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: BorderStateBuilder(
+                            builder: (context, _, elevation, statesController) {
+                              return Shimmer(
+                                parameters: const SphereShimmer(),
+                                elevation: -dimension / 2 + elevation,
+                                child: SizedBox(
+                                  width: dimension,
+                                  height: dimension,
+                                  child: Material(
+                                    color: colorScheme.surfaceContainer,
+                                    shape: const CircleBorder(),
+                                    child: InkWell(
+                                      statesController: statesController,
+                                      onTap: () => log('Button tapped'),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      }),
+                    ),
                   ),
                 ),
                 for (var i = 0; i < 5; i++)

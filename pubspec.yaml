@@ -23,3 +23,4 @@ flutter:
     - shaders/border.frag
     - shaders/blur.frag
     - shaders/pillow_rect.frag
+    - shaders/sphere.frag
