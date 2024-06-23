@@ -18,7 +18,7 @@ sealed class ShimmerParameters {
 
   final ShimmerSurface surface;
 
-  @mustCallSuper
+  @nonVirtual
   void setupUniforms(
     UniformsSetter uniforms, {
     required Size size,
@@ -31,7 +31,10 @@ sealed class ShimmerParameters {
       ..setOffset(cursorPosition)
       ..setFloat(alpha)
       ..setFloat(elevation);
+    _setupAdditionalUniforms(uniforms);
   }
+
+  void _setupAdditionalUniforms(UniformsSetter uniforms) {}
 }
 
 final class BorderShimmer extends ShimmerParameters {
@@ -44,24 +47,9 @@ final class BorderShimmer extends ShimmerParameters {
   final double borderRadius;
 
   @override
-  void setupUniforms(
-    UniformsSetter uniforms, {
-    required Size size,
-    required Offset cursorPosition,
-    required double alpha,
-    required double elevation,
-  }) {
-    super.setupUniforms(
-      uniforms,
-      size: size,
-      cursorPosition: cursorPosition,
-      alpha: alpha,
-      elevation: elevation,
-    );
-    uniforms
-      ..setFloat(borderRadius)
-      ..setFloat(borderWidth);
-  }
+  void _setupAdditionalUniforms(UniformsSetter uniforms) => uniforms
+    ..setFloat(borderRadius)
+    ..setFloat(borderWidth);
 }
 
 final class PillowShimmer extends ShimmerParameters {
