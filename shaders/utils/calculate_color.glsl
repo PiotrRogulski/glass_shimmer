@@ -8,7 +8,8 @@ const vec4 lightColor = vec4(1, 1, 1, 1);
 
 const vec4 V = vec4(0, 0, 1, 0);
 
-vec4 calculateColor(const vec3 pos, const SurfaceProps props, const float alpha, const vec2 cursorPos) {
+vec4 calculateColor(const vec3 basePos, const SurfaceProps props, const float alpha, const vec2 cursorPos) {
+    const vec3 pos = basePos + vec3(0, 0, props.z);
     const float lightHeight = baseLightHeight + 300 * (1 - alpha);
 
     const vec4 L0 = vec4(vec3(cursorPos, lightHeight) - pos, 0);

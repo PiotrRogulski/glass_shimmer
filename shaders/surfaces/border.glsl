@@ -26,20 +26,23 @@ SurfaceProps calculateSurfaceTopLeft(const vec2 pos, const float radius, const f
     const float d = sqrt(sqDist);
 
     if (d > radius) {
-        return SurfaceProps(up, 0, 0);
+        return SurfaceProps(up, 0, 0, 0);
     }
 
     if (d < radius - width) {
-        return SurfaceProps(up, 0.25, 0);
+        return SurfaceProps(up, 0.25, 0, 0);
     }
 
     const float alpha = acos((radius - width / 2 - d) / (width / 2));
     const float beta = atan(radius - pos.y, radius - pos.x);
 
+    const float z = sqrt(pow(radius, 2) - sqDist);
+
     return SurfaceProps(
         rotZ(beta) * rotY(-alpha) * vec3(1, 0, 0),
         1,
-        0
+        0,
+        z
     );
 }
 
@@ -86,7 +89,7 @@ SurfaceProps calculateSurface(const vec2 pos, const vec2 size, const float radiu
         return props;
     }
 
-    return SurfaceProps(up, 0.25, 0);
+    return SurfaceProps(up, 0.25, 0, 0);
 }
 
 #endif // BORDER_H
