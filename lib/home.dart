@@ -87,7 +87,7 @@ class Home extends StatelessWidget {
                 Center(
                   child: Wrap(
                     children: [
-                      for (var i = 0; i < 5; i++)
+                      for (final i in [0, 1, 2, 3, 4])
                         Padding(
                           padding: const EdgeInsets.all(8),
                           child: SizedBox.square(
@@ -97,9 +97,7 @@ class Home extends StatelessWidget {
                               child: Center(
                                 child: Text(
                                   '${i + 1}',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium,
+                                  style: textTheme.headlineMedium,
                                 ),
                               ),
                             ),
@@ -113,32 +111,31 @@ class Home extends StatelessWidget {
                   child: Center(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(5, (i) {
-                        final dimension = (12 + i * 24).toDouble();
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 4),
-                          child: BorderStateBuilder(
-                            builder: (context, _, elevation, statesController) {
-                              return Shimmer(
-                                parameters: const SphereShimmer(),
-                                elevation: -dimension / 2 + elevation,
-                                child: SizedBox(
-                                  width: dimension,
-                                  height: dimension,
-                                  child: Material(
-                                    color: colorScheme.surfaceContainer,
-                                    shape: const CircleBorder(),
-                                    child: InkWell(
-                                      statesController: statesController,
-                                      onTap: () => log('Button tapped'),
+                      children: [
+                        for (final dimension in [12, 36, 60, 84, 108])
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: BorderStateBuilder(
+                              builder: (_, __, elevation, statesController) {
+                                return Shimmer(
+                                  parameters: const SphereShimmer(),
+                                  elevation: -dimension / 2 + elevation,
+                                  child: SizedBox.square(
+                                    dimension: dimension.toDouble(),
+                                    child: Material(
+                                      color: colorScheme.surfaceContainer,
+                                      shape: const CircleBorder(),
+                                      child: InkWell(
+                                        statesController: statesController,
+                                        onTap: () => log('Button tapped'),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           ),
-                        );
-                      }),
+                      ],
                     ),
                   ),
                 ),
