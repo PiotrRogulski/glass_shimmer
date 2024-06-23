@@ -27,7 +27,7 @@ class ShimmerCard extends HookWidget {
             borderWidth: borderWidth,
             borderRadius: borderRadius,
           ),
-          elevation: elevation,
+          elevation: elevation - borderWidth / 2,
           child: Material(
             surfaceTintColor: colorScheme.surfaceTint,
             borderRadius: BorderRadius.circular(borderRadius),

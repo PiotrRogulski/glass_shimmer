@@ -18,7 +18,7 @@ SurfaceProps calculateSurface(const vec2 pos, const vec2 size) {
     }
     const float z = sqrt(1 - r * r);
     const vec3 N = vec3(x / (width / 2), y / (height / 2), z / maxZ);
-    return SurfaceProps(normalize(N), 0.5, 0, z * maxZ);
+    return SurfaceProps(normalize(N), 0.75, 0.5, z * maxZ);
 }
 
 #endif // SPHERE_H

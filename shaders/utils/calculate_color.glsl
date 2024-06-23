@@ -1,7 +1,7 @@
 #include <utils/attenuation.glsl>
 #include <utils/surface_props.glsl>
 
-const float specularAlpha = 0.99;
+const float specularAlpha = 5;
 
 const float baseLightHeight = 15;
 const vec4 lightColor = vec4(1, 1, 1, 1);
