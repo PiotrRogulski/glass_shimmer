@@ -1,87 +1,58 @@
-import 'dart:ui';
-
-import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/widgets.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 
-extension CursorPositionX on BuildContext {
-  ({Offset position, bool isActive}) get cursorPosition =>
-      CursorPosition.of(this);
-}
-
 class CursorPosition extends HookWidget {
-  const CursorPosition({
-    super.key,
-    required this.child,
-  });
+  const CursorPosition({super.key, required this.child});
 
   final Widget child;
 
   static ({Offset position, bool isActive}) of(BuildContext context) {
-    final cursorPosition =
-        context.dependOnInheritedWidgetOfExactType<_CursorPosition>();
-    assert(cursorPosition != null, 'No CursorPosition found in context');
-    cursorPosition!;
-    return (
-      position: cursorPosition.cursorPosition,
-      isActive: cursorPosition.cursorActive,
-    );
+    final data =
+        context.dependOnInheritedWidgetOfExactType<CursorPositionData>()!;
+    return (position: data.position, isActive: data.isActive);
   }
 
   @override
   Widget build(BuildContext context) {
-    final cursorPosition = useState(Offset.zero);
-    final cursorActive = useState(false);
+    final position = useState(Offset.zero);
+    final isActive = useState(false);
 
-    void updatePosition(PointerEvent event) {
-      cursorActive.value = context.size?.contains(event.position) ?? false;
-      if (cursorActive.value) {
-        cursorPosition.value = event.position;
+    useEffect(() {
+      void update(PointerEvent event) {
+        position.value = event.position;
+        isActive.value = switch (event) {
+          PointerRemovedEvent() => false,
+          PointerAddedEvent() => true,
+          _ => isActive.value,
+        };
       }
-    }
 
-    return MouseRegion(
-      onEnter: updatePosition,
-      onExit: (_) => cursorActive.value = false,
-      child: Listener(
-        onPointerMove: updatePosition,
-        onPointerHover: updatePosition,
-        onPointerDown: (event) {
-          if (event.kind != PointerDeviceKind.mouse) {
-            cursorActive.value = true;
-          }
-        },
-        onPointerUp: (event) {
-          if (event.kind != PointerDeviceKind.mouse) {
-            cursorActive.value = false;
-          }
-        },
-        onPointerCancel: (event) {
-          if (event.kind != PointerDeviceKind.mouse) {
-            cursorActive.value = false;
-          }
-        },
-        child: _CursorPosition(
-          cursorPosition: cursorPosition.value,
-          cursorActive: cursorActive.value,
-          child: child,
-        ),
-      ),
+      GestureBinding.instance.pointerRouter.addGlobalRoute(update);
+      return () =>
+          GestureBinding.instance.pointerRouter.removeGlobalRoute(update);
+    }, []);
+
+    return CursorPositionData(
+      position: position.value,
+      isActive: isActive.value,
+      child: child,
     );
   }
 }
 
-class _CursorPosition extends InheritedWidget {
-  const _CursorPosition({
-    required this.cursorPosition,
-    required this.cursorActive,
+class CursorPositionData extends InheritedWidget {
+  const CursorPositionData({
+    super.key,
+    required this.position,
+    required this.isActive,
     required super.child,
   });
 
-  final Offset cursorPosition;
-  final bool cursorActive;
+  final Offset position;
+  final bool isActive;
 
   @override
-  bool updateShouldNotify(_CursorPosition oldWidget) =>
-      cursorPosition != oldWidget.cursorPosition ||
-      cursorActive != oldWidget.cursorActive;
+  bool updateShouldNotify(covariant CursorPositionData oldWidget) =>
+      position != oldWidget.position || isActive != oldWidget.isActive;
 }

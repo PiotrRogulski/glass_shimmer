@@ -6,8 +6,7 @@ import 'package:flutter_shaders/flutter_shaders.dart';
 enum ShimmerSurface<T extends ShimmerParameters> {
   border('shaders/border.frag'),
   pillow('shaders/pillow_rect.frag'),
-  sphere('shaders/sphere.frag'),
-  ;
+  sphere('shaders/sphere.frag');
 
   const ShimmerSurface(this.assetKey);
 
@@ -39,18 +38,17 @@ sealed class ShimmerParameters {
 }
 
 final class BorderShimmer extends ShimmerParameters {
-  const BorderShimmer({
-    required this.borderWidth,
-    required this.borderRadius,
-  }) : super(ShimmerSurface.border);
+  const BorderShimmer({required this.borderWidth, required this.borderRadius})
+    : super(ShimmerSurface.border);
 
   final double borderWidth;
   final double borderRadius;
 
   @override
-  void _setupAdditionalUniforms(UniformsSetter uniforms) => uniforms
-    ..setFloat(borderRadius)
-    ..setFloat(borderWidth);
+  void _setupAdditionalUniforms(UniformsSetter uniforms) =>
+      uniforms
+        ..setFloat(borderRadius)
+        ..setFloat(borderWidth);
 }
 
 final class PillowShimmer extends ShimmerParameters {

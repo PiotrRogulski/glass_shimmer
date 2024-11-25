@@ -5,11 +5,7 @@ import 'package:glass_shimmer/widgets/border_state.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 
 class ShimmerCard extends HookWidget {
-  const ShimmerCard({
-    super.key,
-    this.onTap,
-    required this.child,
-  });
+  const ShimmerCard({super.key, this.onTap, required this.child});
 
   final VoidCallback? onTap;
   final Widget child;

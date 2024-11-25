@@ -27,10 +27,11 @@ class Home extends StatelessWidget {
                 itemCount: 25,
                 padding:
                     const EdgeInsets.all(12) + EdgeBlur.blurPaddingOf(context),
-                itemBuilder: (context, i) => ShimmerListTile(
-                  title: Text('Item ${i + 1}'),
-                  onTap: () => log('Item ${i + 1} tapped'),
-                ),
+                itemBuilder:
+                    (context, i) => ShimmerListTile(
+                      title: Text('Item ${i + 1}'),
+                      onTap: () => log('Item ${i + 1} tapped'),
+                    ),
                 separatorBuilder: (context, index) => const SizedBox(height: 8),
               ),
             ),
@@ -46,12 +47,7 @@ class Home extends StatelessWidget {
                     child: Row(
                       children: [
                         for (final color in Colors.primaries) ...[
-                          Expanded(
-                            child: Container(
-                              height: 64,
-                              color: color,
-                            ),
-                          ),
+                          Expanded(child: Container(height: 64, color: color)),
                           if (color != Colors.primaries.last)
                             const SizedBox(width: 4),
                         ],
@@ -66,11 +62,7 @@ class Home extends StatelessWidget {
                     child: Row(
                       children: [
                         for (final color in Colors.primaries) ...[
-                          Container(
-                            width: 8,
-                            height: 64,
-                            color: color,
-                          ),
+                          Container(width: 8, height: 64, color: color),
                           if (color != Colors.primaries.last) const Spacer(),
                         ],
                       ],
@@ -79,10 +71,7 @@ class Home extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    _loremIpsum,
-                    style: textTheme.bodyLarge,
-                  ),
+                  child: Text(_loremIpsum, style: textTheme.bodyLarge),
                 ),
                 Center(
                   child: Wrap(
@@ -166,7 +155,8 @@ class Home extends StatelessWidget {
   }
 }
 
-const _loremIpsum = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
+const _loremIpsum =
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
     'In in nunc sem. Suspendisse accumsan, leo nec interdum tristique, '
     'metus dolor aliquet mauris, sit amet pellentesque metus tellus nec lorem. '
     'Proin auctor eget libero eget convallis. Aenean euismod ut leo non '

@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_shaders/flutter_shaders.dart';
 
 class EdgeBlur extends StatelessWidget {
-  const EdgeBlur({
-    super.key,
-    required this.child,
-  });
+  const EdgeBlur({super.key, required this.child});
 
   final Widget child;
 
@@ -18,8 +15,10 @@ class EdgeBlur extends StatelessWidget {
     final safeArea = MediaQuery.paddingOf(context);
 
     final effectiveTopHeight = max(blurHeight, safeArea.top + safeAreaPadding);
-    final effectiveBottomHeight =
-        max(blurHeight, safeArea.bottom + safeAreaPadding);
+    final effectiveBottomHeight = max(
+      blurHeight,
+      safeArea.bottom + safeAreaPadding,
+    );
 
     return EdgeInsets.only(
       top: effectiveTopHeight,
@@ -34,29 +33,23 @@ class EdgeBlur extends StatelessWidget {
       bottom: effectiveBottomHeight,
     ) = blurPaddingOf(context);
 
-    return ShaderBuilder(
-      assetKey: 'shaders/blur.frag',
-      child: child,
-      (context, shader, child) {
-        return AnimatedSampler(
-          child: child!,
-          (image, size, canvas) {
-            shader
-              ..setFloatUniforms((uniforms) {
-                uniforms
-                  ..setSize(size)
-                  ..setFloat(effectiveTopHeight)
-                  ..setFloat(effectiveBottomHeight);
-              })
-              ..setImageSampler(0, image);
+    return ShaderBuilder(assetKey: 'shaders/blur.frag', child: child, (
+      context,
+      shader,
+      child,
+    ) {
+      return AnimatedSampler(child: child!, (image, size, canvas) {
+        shader
+          ..setFloatUniforms((uniforms) {
+            uniforms
+              ..setSize(size)
+              ..setFloat(effectiveTopHeight)
+              ..setFloat(effectiveBottomHeight);
+          })
+          ..setImageSampler(0, image);
 
-            canvas.drawRect(
-              Offset.zero & size,
-              Paint()..shader = shader,
-            );
-          },
-        );
-      },
-    );
+        canvas.drawRect(Offset.zero & size, Paint()..shader = shader);
+      });
+    });
   }
 }

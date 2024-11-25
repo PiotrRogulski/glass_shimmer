@@ -26,9 +26,7 @@ class Shimmer<T extends ShimmerParameters> extends StatelessWidget {
           child: ShimmerShader(
             parameters: parameters,
             elevation: elevation,
-            child: const Material(
-              type: MaterialType.transparency,
-            ),
+            child: const Material(type: MaterialType.transparency),
           ),
         ),
       ],
@@ -50,11 +48,9 @@ class ShimmerShader<T extends ShimmerParameters> extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (:position, :isActive) = context.cursorPosition;
+    final (:position, :isActive) = CursorPosition.of(context);
 
-    final shimmerController = useAnimationController(
-      duration: Durations.long4,
-    );
+    final shimmerController = useAnimationController(duration: Durations.long4);
 
     final progress = useAnimation(
       CurvedAnimation(
@@ -65,46 +61,37 @@ class ShimmerShader<T extends ShimmerParameters> extends HookWidget {
     );
     final shimmerAlpha = progress;
 
-    useEffect(
-      () {
-        if (isActive) {
-          shimmerController.forward();
-        } else {
-          shimmerController.reverse();
-        }
+    useEffect(() {
+      if (isActive) {
+        shimmerController.forward();
+      } else {
+        shimmerController.reverse();
+      }
 
-        return null;
-      },
-      [isActive],
-    );
+      return null;
+    }, [isActive]);
 
     return ShaderBuilder(
       assetKey: parameters.surface.assetKey,
       child: IgnorePointer(child: child),
       (context, shader, child) {
-        return AnimatedSampler(
-          (image, size, canvas) {
-            final topLeft = switch (context.findRenderObject()) {
-              final RenderBox box => box.localToGlobal(Offset.zero),
-              _ => Offset.zero,
-            };
-            shader.setFloatUniforms((uniforms) {
-              parameters.setupUniforms(
-                uniforms,
-                size: size,
-                cursorPosition: position - topLeft,
-                alpha: shimmerAlpha,
-                elevation: elevation,
-              );
-            });
-
-            canvas.drawRect(
-              Offset.zero & size,
-              Paint()..shader = shader,
+        return AnimatedSampler((image, size, canvas) {
+          final topLeft = switch (context.findRenderObject()) {
+            final RenderBox box => box.localToGlobal(Offset.zero),
+            _ => Offset.zero,
+          };
+          shader.setFloatUniforms((uniforms) {
+            parameters.setupUniforms(
+              uniforms,
+              size: size,
+              cursorPosition: position - topLeft,
+              alpha: shimmerAlpha,
+              elevation: elevation,
             );
-          },
-          child: child!,
-        );
+          });
+
+          canvas.drawRect(Offset.zero & size, Paint()..shader = shader);
+        }, child: child!);
       },
     );
   }

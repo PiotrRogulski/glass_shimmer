@@ -5,11 +5,7 @@ import 'package:glass_shimmer/widgets/border_state.dart';
 import 'package:leancode_hooks/leancode_hooks.dart';
 
 class ShimmerListTile extends HookWidget {
-  const ShimmerListTile({
-    super.key,
-    this.onTap,
-    this.title,
-  });
+  const ShimmerListTile({super.key, this.onTap, this.title});
 
   final VoidCallback? onTap;
   final Widget? title;

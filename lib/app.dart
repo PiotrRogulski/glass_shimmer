@@ -23,9 +23,7 @@ class App extends StatelessWidget {
       ),
       child: MaterialApp(
         theme: ThemeData.from(
-          colorScheme: colorScheme.copyWith(
-            shadow: Colors.transparent,
-          ),
+          colorScheme: colorScheme.copyWith(shadow: Colors.transparent),
         ).copyWith(
           splashFactory: NoSplash.splashFactory,
           highlightColor: Colors.transparent,

@@ -4,11 +4,7 @@ import 'package:glass_shimmer/shimmer/shimmer_parameters.dart';
 import 'package:glass_shimmer/widgets/border_state.dart';
 
 class ShimmerTextButton extends StatelessWidget {
-  const ShimmerTextButton({
-    super.key,
-    this.onTap,
-    required this.child,
-  });
+  const ShimmerTextButton({super.key, this.onTap, required this.child});
 
   final VoidCallback? onTap;
   final Widget child;
