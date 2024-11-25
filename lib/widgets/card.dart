@@ -37,7 +37,7 @@ class ShimmerCard extends HookWidget {
               foregroundDecoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(borderRadius),
                 border: Border.all(
-                  color: colorScheme.onSurface.withOpacity(0.15),
+                  color: colorScheme.onSurface.withValues(alpha: 0.15),
                   width: borderWidth,
                 ),
               ),
