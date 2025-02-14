@@ -5,3 +5,7 @@ analyzer:
     - custom_lint
   errors:
     todo: ignore
+
+linter:
+  rules:
+    require_trailing_commas: false

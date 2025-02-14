@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/glass_shimmer.iml" filepath="$PROJECT_DIR$/glass_shimmer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/glass_shimmer.iml" filepath="$PROJECT_DIR$/.idea/glass_shimmer.iml" />
       <module fileurl="file://$PROJECT_DIR$/android/glass_shimmer_android.iml" filepath="$PROJECT_DIR$/android/glass_shimmer_android.iml" />
     </modules>
   </component>

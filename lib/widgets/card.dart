@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:glass_shimmer/shimmer/shimmer.dart';
 import 'package:glass_shimmer/shimmer/shimmer_parameters.dart';
 import 'package:glass_shimmer/widgets/border_state.dart';
-import 'package:leancode_hooks/leancode_hooks.dart';
 
-class ShimmerCard extends HookWidget {
+class ShimmerCard extends StatelessWidget {
   const ShimmerCard({super.key, this.onTap, required this.child});
 
   final VoidCallback? onTap;

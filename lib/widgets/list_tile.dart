@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:glass_shimmer/shimmer/shimmer.dart';
 import 'package:glass_shimmer/shimmer/shimmer_parameters.dart';
 import 'package:glass_shimmer/widgets/border_state.dart';
-import 'package:leancode_hooks/leancode_hooks.dart';
 
-class ShimmerListTile extends HookWidget {
+class ShimmerListTile extends StatelessWidget {
   const ShimmerListTile({super.key, this.onTap, this.title});
 
   final VoidCallback? onTap;
