@@ -105,7 +105,7 @@ class Home extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 4),
                             child: BorderStateBuilder(
-                              builder: (_, __, elevation, statesController) {
+                              builder: (_, _, elevation, statesController) {
                                 return Shimmer(
                                   parameters: const SphereShimmer(),
                                   elevation: -dimension / 2 + elevation,
