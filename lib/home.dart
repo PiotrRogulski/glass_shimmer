@@ -27,11 +27,10 @@ class Home extends StatelessWidget {
                 itemCount: 25,
                 padding:
                     const EdgeInsets.all(12) + EdgeBlur.blurPaddingOf(context),
-                itemBuilder:
-                    (context, i) => ShimmerListTile(
-                      title: Text('Item ${i + 1}'),
-                      onTap: () => log('Item ${i + 1} tapped'),
-                    ),
+                itemBuilder: (context, i) => ShimmerListTile(
+                  title: Text('Item ${i + 1}'),
+                  onTap: () => log('Item ${i + 1} tapped'),
+                ),
                 separatorBuilder: (context, index) => const SizedBox(height: 8),
               ),
             ),

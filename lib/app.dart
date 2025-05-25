@@ -22,14 +22,15 @@ class App extends StatelessWidget {
         systemNavigationBarIconBrightness: Brightness.light,
       ),
       child: MaterialApp(
-        theme: ThemeData.from(
-          colorScheme: colorScheme.copyWith(shadow: Colors.transparent),
-        ).copyWith(
-          splashFactory: NoSplash.splashFactory,
-          highlightColor: Colors.transparent,
-          hoverColor: Colors.transparent,
-          splashColor: Colors.transparent,
-        ),
+        theme:
+            ThemeData.from(
+              colorScheme: colorScheme.copyWith(shadow: Colors.transparent),
+            ).copyWith(
+              splashFactory: NoSplash.splashFactory,
+              highlightColor: Colors.transparent,
+              hoverColor: Colors.transparent,
+              splashColor: Colors.transparent,
+            ),
         home: const EdgeBlur(child: Home()),
       ),
     );

@@ -28,10 +28,8 @@ class EdgeBlur extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final EdgeInsets(
-      top: effectiveTopHeight,
-      bottom: effectiveBottomHeight,
-    ) = blurPaddingOf(context);
+    final EdgeInsets(top: effectiveTopHeight, bottom: effectiveBottomHeight) =
+        blurPaddingOf(context);
 
     return ShaderBuilder(assetKey: 'shaders/blur.frag', child: child, (
       context,

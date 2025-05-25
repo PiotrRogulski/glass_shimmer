@@ -45,10 +45,9 @@ final class BorderShimmer extends ShimmerParameters {
   final double borderRadius;
 
   @override
-  void _setupAdditionalUniforms(UniformsSetter uniforms) =>
-      uniforms
-        ..setFloat(borderRadius)
-        ..setFloat(borderWidth);
+  void _setupAdditionalUniforms(UniformsSetter uniforms) => uniforms
+    ..setFloat(borderRadius)
+    ..setFloat(borderWidth);
 }
 
 final class PillowShimmer extends ShimmerParameters {

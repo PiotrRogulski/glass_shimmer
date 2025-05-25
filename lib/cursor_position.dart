@@ -8,8 +8,8 @@ class CursorPosition extends HookWidget {
   final Widget child;
 
   static ({Offset position, bool isActive}) of(BuildContext context) {
-    final data =
-        context.dependOnInheritedWidgetOfExactType<CursorPositionData>()!;
+    final data = context
+        .dependOnInheritedWidgetOfExactType<CursorPositionData>()!;
     return (position: data.position, isActive: data.isActive);
   }
 
