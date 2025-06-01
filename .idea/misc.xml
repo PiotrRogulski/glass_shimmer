@@ -4,4 +4,5 @@
     <option name="show" value="ASK" />
     <option name="description" value="" />
   </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Android API 31 Platform" project-jdk-type="Android SDK" />
 </project>
